@@ -2,6 +2,8 @@ package com.dotawsnet.aiagent.Services;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
+import org.stringtemplate.v4.compiler.CodeGenerator.primary_return;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.ai.chat.messages.Message;
@@ -15,6 +17,7 @@ public class ChatService {
 
     private CalculatorTool calculatorTool;
     private WeatherTool weatherTool;
+    private CurrencyExchangeTool currencyExchangeTool;
     private List<Message> conversationHistory = new ArrayList<>();
 
     private static final String SYSTEM_PROMPT = """
@@ -25,10 +28,15 @@ public class ChatService {
             2. After receiving tool results, explain the answer naturally.
             """;;
 
-    public ChatService(ChatClient.Builder chatClient, CalculatorTool calculatorTool, WeatherTool weatherTool) {
+    public ChatService(
+            ChatClient.Builder chatClient, 
+            CalculatorTool calculatorTool, 
+            WeatherTool weatherTool,
+            CurrencyExchangeTool currencyExchangeTool) {
         this.chatClient = chatClient.build();
         this.calculatorTool = calculatorTool;
         this.weatherTool = weatherTool;
+        this.currencyExchangeTool = currencyExchangeTool;
     }
 
     public String chat(String message) {
@@ -37,7 +45,7 @@ public class ChatService {
         .prompt()
         .system(SYSTEM_PROMPT)
         .messages(conversationHistory)
-        .tools(calculatorTool, weatherTool)
+        .tools(calculatorTool, weatherTool, currencyExchangeTool)
         .call()
         .content();
         conversationHistory.add(new AssistantMessage(response));

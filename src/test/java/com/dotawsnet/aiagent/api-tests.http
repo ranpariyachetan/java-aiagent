@@ -7,4 +7,19 @@ GET {{baseUrl}}/api/health
 ### Chat Endpoint
 POST {{baseUrl}}/api/chat
 
-"Hello how are you?"
+"Hello... My Name is Chetan. I am a software engineer and I want to discuss something with you."
+
+### Chat Endpoing with Follow-up Questions.
+POST {{baseUrl}}/api/chat
+
+"Nice to meet you. What is my name?"
+
+### Chat Endpoing with Follow-up Questions.
+POST {{baseUrl}}/api/chat
+
+"How's weather in San Diego?"
+
+### Chat Endpoint with currency exchange
+POST {{baseUrl}}/api/chat
+
+"What will be total amount in Indian Rupees if convert 22000 SGD?"
