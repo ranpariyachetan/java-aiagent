@@ -1,0 +1,10 @@
+### Variables
+@baseUrl = http://localhost:8080
+
+### Health Check
+GET {{baseUrl}}/api/health
+
+### Chat Endpoint
+POST {{baseUrl}}/api/chat
+
+"Hello how are you?"
