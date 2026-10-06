@@ -14,6 +14,7 @@ public class ChatService {
     private ChatClient chatClient;
 
     private CalculatorTool calculatorTool;
+    private WeatherTool weatherTool;
     private List<Message> conversationHistory = new ArrayList<>();
 
     private static final String SYSTEM_PROMPT = """
@@ -24,9 +25,10 @@ public class ChatService {
             2. After receiving tool results, explain the answer naturally.
             """;;
 
-    public ChatService(ChatClient.Builder chatClient, CalculatorTool calculatorTool) {
+    public ChatService(ChatClient.Builder chatClient, CalculatorTool calculatorTool, WeatherTool weatherTool) {
         this.chatClient = chatClient.build();
         this.calculatorTool = calculatorTool;
+        this.weatherTool = weatherTool;
     }
 
     public String chat(String message) {
@@ -35,7 +37,7 @@ public class ChatService {
         .prompt()
         .system(SYSTEM_PROMPT)
         .messages(conversationHistory)
-        .tools(calculatorTool)
+        .tools(calculatorTool, weatherTool)
         .call()
         .content();
         conversationHistory.add(new AssistantMessage(response));
