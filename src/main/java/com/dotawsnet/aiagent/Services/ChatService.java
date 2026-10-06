@@ -7,27 +7,26 @@ import java.util.List;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.messages.AssistantMessage;
-
+import com.dotawsnet.aiagent.aitools.*;
 @Service 
 public class ChatService {
     
     private ChatClient chatClient;
 
+    private CalculatorTool calculatorTool;
     private List<Message> conversationHistory = new ArrayList<>();
 
     private static final String SYSTEM_PROMPT = """
-            You are a customer support executive of a food delivery application called Tomato.
+            You are a helpful AI assistant with access to external tools.
 
-            Your job is to identify the customer's main problem and urgencey. Answer them related to their query in one line.
-
-            Use professional language. If user has an issue, use words like I understand your frustration, I am really sorry for your trouble etc.
-
-            Do not answer any other question which is not related to ordering food query, refund query,
-            order tracking status query or company policy query.
+            Follow these rules:
+            1. For arithmetic operations, ALWAYS use the CalculatorTool.
+            2. After receiving tool results, explain the answer naturally.
             """;;
 
-    public ChatService(ChatClient.Builder chatClient) {
+    public ChatService(ChatClient.Builder chatClient, CalculatorTool calculatorTool) {
         this.chatClient = chatClient.build();
+        this.calculatorTool = calculatorTool;
     }
 
     public String chat(String message) {
@@ -36,6 +35,7 @@ public class ChatService {
         .prompt()
         .system(SYSTEM_PROMPT)
         .messages(conversationHistory)
+        .tools(calculatorTool)
         .call()
         .content();
         conversationHistory.add(new AssistantMessage(response));
