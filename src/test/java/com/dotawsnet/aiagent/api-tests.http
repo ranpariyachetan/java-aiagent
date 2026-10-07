@@ -23,3 +23,9 @@ POST {{baseUrl}}/api/chat
 POST {{baseUrl}}/api/chat
 
 "What will be total amount in Indian Rupees if convert 22000 SGD?"
+
+### Build Website
+POST {{baseUrl}}/website/generate
+Content-Type: text/plain
+
+"Create me a portfolio webiste. My name is Chetan Ranpariya. I am a Software Engineer working with Autodesk. I have extensive experiennce on backend development."
